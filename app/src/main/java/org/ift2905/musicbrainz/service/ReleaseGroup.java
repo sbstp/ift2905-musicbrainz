@@ -2,6 +2,7 @@ package org.ift2905.musicbrainz.service;
 
 import com.squareup.moshi.Json;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class ReleaseGroup {
@@ -14,7 +15,7 @@ public class ReleaseGroup {
     public String primaryType;
 
     @Json(name="first-release-date")
-    public String releaseDate;
+    public GregorianCalendar releaseDate;
 
     @Json(name="secondary-types")
     public List<String> secondaryTypes;

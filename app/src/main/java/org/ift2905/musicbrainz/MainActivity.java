@@ -9,17 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import org.ift2905.musicbrainz.service.Artist;
 import org.ift2905.musicbrainz.service.MusicBrainzServiceTimeout;
+import org.ift2905.musicbrainz.service.Release;
 import org.ift2905.musicbrainz.service.ReleaseGroup;
 import org.ift2905.musicbrainz.service.MusicBrainzService;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -56,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 List<Artist> artists = serv.searchArtist(params[0]);
-                List<ReleaseGroup> entries = serv.getDiscography(artists.get(0).id);
+                List<ReleaseGroup> entries = serv.getReleaseGroups(artists.get(0).id);
+                //List<Release> releases = serv.getReleases(entries.get(0).id);
                 return entries;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -81,7 +84,15 @@ public class MainActivity extends AppCompatActivity {
 
         public ReleaseGroupAdapter(List<ReleaseGroup> releaseGroups) {
             this.releaseGroups = releaseGroups;
-
+            Collections.sort(this.releaseGroups, new Comparator<ReleaseGroup>() {
+                @Override
+                public int compare(ReleaseGroup lhs, ReleaseGroup rhs) {
+                    if (lhs.releaseDate == null || rhs.releaseDate == null) {
+                        return 0;
+                    }
+                    return lhs.releaseDate.compareTo(rhs.releaseDate);
+                }
+            });
         }
 
         @Override

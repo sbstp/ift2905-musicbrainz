@@ -20,15 +20,17 @@ public class MusicBrainzService {
     private static final int DEFAULT_TIMEOUT = 5000;
 
     private OkHttpClient httpClient;
-    private Moshi moshi;
     private JsonAdapter<SearchArtistResult> artistAdapter;
     private JsonAdapter<ReleaseGroupResult> releaseGroupAdapter;
+    private JsonAdapter<ReleaseResult> releaseAdapter;
 
     public MusicBrainzService() {
         this.httpClient = new OkHttpClient();
-        this.moshi = new Moshi.Builder().build();
-        this.artistAdapter = this.moshi.adapter(SearchArtistResult.class);
-        this.releaseGroupAdapter = this.moshi.adapter(ReleaseGroupResult.class);
+
+        Moshi moshi = new Moshi.Builder().add(new DateAdapter()).build();
+        this.artistAdapter = moshi.adapter(SearchArtistResult.class);
+        this.releaseGroupAdapter = moshi.adapter(ReleaseGroupResult.class);
+        this.releaseAdapter = moshi.adapter(ReleaseResult.class);
     }
 
     private HttpUrl.Builder createUrl(String type) {
@@ -77,15 +79,15 @@ public class MusicBrainzService {
         return se.entries;
     }
 
-    public List<ReleaseGroup> getDiscography(String artistId) throws IOException, MusicBrainzServiceTimeout {
-        return getDiscography(artistId, ReleaseGroupType.ALL);
+    public List<ReleaseGroup> getReleaseGroups(String artistId) throws IOException, MusicBrainzServiceTimeout {
+        return getReleaseGroups(artistId, ReleaseGroupType.ALL);
     }
 
-    public List<ReleaseGroup> getDiscography(String artistId, String type) throws IOException, MusicBrainzServiceTimeout {
-        return getDiscography(artistId, type, DEFAULT_TIMEOUT);
+    public List<ReleaseGroup> getReleaseGroups(String artistId, String type) throws IOException, MusicBrainzServiceTimeout {
+        return getReleaseGroups(artistId, type, DEFAULT_TIMEOUT);
     }
 
-    public List<ReleaseGroup> getDiscography(String artistId, String type, int timeout) throws IOException, MusicBrainzServiceTimeout {
+    public List<ReleaseGroup> getReleaseGroups(String artistId, String type, int timeout) throws IOException, MusicBrainzServiceTimeout {
         int count = 0;
         int max = -1;
 
@@ -94,12 +96,11 @@ public class MusicBrainzService {
         do {
             HttpUrl url = createUrl("release-group")
                     .addQueryParameter("artist", artistId)
-                    .addQueryParameter("limit", Integer.toString(100))
+                    .addQueryParameter("limit", "100")
                     .addQueryParameter("offset", Integer.toString(count))
                     .addQueryParameter("type", type)
                     .build();
 
-            Log.i("url", url.toString());
             Response res = tryGetResponse(url, timeout);
             ReleaseGroupResult group = this.releaseGroupAdapter.fromJson(res.body().source());
 
@@ -112,6 +113,23 @@ public class MusicBrainzService {
         } while (count < max);
 
         return entries;
+    }
+
+    public List<Release> getReleases(String releaseGroupId) throws IOException, MusicBrainzServiceTimeout {
+        return getReleases(releaseGroupId, DEFAULT_TIMEOUT);
+    }
+
+    public List<Release> getReleases(String releaseGroupId, int timeout) throws IOException, MusicBrainzServiceTimeout {
+        HttpUrl url = createUrl("release")
+                .addQueryParameter("release-group", releaseGroupId)
+                .addQueryParameter("limit", "25")
+                .addQueryParameter("inc", "recordings")
+                .build();
+
+        Response res = tryGetResponse(url, timeout);
+        ReleaseResult rel = this.releaseAdapter.fromJson(res.body().source());
+
+        return rel.entries;
     }
 
     private static class SearchArtistResult {
@@ -132,6 +150,12 @@ public class MusicBrainzService {
         @Json(name = "release-groups")
         public List<ReleaseGroup> entries;
 
+    }
+
+    private static class ReleaseResult {
+
+        @Json(name = "releases")
+        public List<Release> entries;
     }
 
 
