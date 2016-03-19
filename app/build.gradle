@@ -26,4 +26,5 @@ dependencies {
     compile 'com.squareup.moshi:moshi:1.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'org.jsoup:jsoup:1.8.3'
 }

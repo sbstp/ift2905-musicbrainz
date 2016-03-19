@@ -1,4 +1,4 @@
-package org.ift2905.musicbrainz.service;
+package org.ift2905.musicbrainz.service.musicbrainz;
 
 public class Artist {
 

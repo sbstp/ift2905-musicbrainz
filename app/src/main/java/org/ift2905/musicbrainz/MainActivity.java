@@ -13,16 +13,19 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.ift2905.musicbrainz.service.Artist;
-import org.ift2905.musicbrainz.service.MusicBrainzServiceTimeout;
-import org.ift2905.musicbrainz.service.Release;
-import org.ift2905.musicbrainz.service.ReleaseGroup;
-import org.ift2905.musicbrainz.service.MusicBrainzService;
+import org.ift2905.musicbrainz.service.musicbrainz.Artist;
+import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzServiceTimeout;
+import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
+import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
+import org.ift2905.musicbrainz.service.musicmap.MusicMapService;
+import org.ift2905.musicbrainz.service.musicmap.MusicMapServiceError;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import okhttp3.HttpUrl;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +36,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                MusicMapService serv = new MusicMapService();
+                List<String> artists;
+                try {
+                    artists = serv.getSimilarArtists("bob dylan");
+                    for (String artist : artists) {
+                        Log.i("artist", artist);
+                    }
+                } catch (IOException | MusicMapServiceError e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+            }
+        }.execute();
 
         listView = (ListView) findViewById(R.id.listView);
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);

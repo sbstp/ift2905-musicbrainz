@@ -1,6 +1,4 @@
-package org.ift2905.musicbrainz.service;
-
-import android.util.Log;
+package org.ift2905.musicbrainz.service.musicbrainz;
 
 import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
