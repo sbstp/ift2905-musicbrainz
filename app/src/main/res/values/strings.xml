@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">musicbrainz</string>
+
+    <string name="main_tab_album_title">Album</string>
+    <string name="main_tab_album_hint">Rechercher un album</string>
+
+    <string name="main_tab_artist_title">Artiste</string>
+    <string name="main_tab_artist_hint">Rechercher un artiste</string>
+
+    <string name="main_tab_history_title">Historique</string>
 </resources>

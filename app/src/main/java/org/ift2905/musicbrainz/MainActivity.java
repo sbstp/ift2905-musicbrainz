@@ -1,148 +1,103 @@
 package org.ift2905.musicbrainz;
 
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.EditText;
 
-import org.ift2905.musicbrainz.service.musicbrainz.Artist;
-import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzServiceTimeout;
-import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
-import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
-import org.ift2905.musicbrainz.service.musicmap.MusicMapService;
-import org.ift2905.musicbrainz.service.musicmap.MusicMapServiceError;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import okhttp3.HttpUrl;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ListView listView;
-    private LayoutInflater inflater;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private PagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                MusicMapService serv = new MusicMapService();
-                List<String> artists;
-                try {
-                    artists = serv.getSimilarArtists("bob dylan");
-                    for (String artist : artists) {
-                        Log.i("artist", artist);
-                    }
-                } catch (IOException | MusicMapServiceError e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-            }
-        }.execute();
-
-        listView = (ListView) findViewById(R.id.listView);
-        inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-
-        TextView tv = (TextView) findViewById(R.id.editText);
-        tv.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_NULL && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                    new ApiTask().execute(v.getText().toString());
-                    return true;
-                }
-                return false;
-            }
-        });
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        pagerAdapter = new PagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    private class ApiTask extends AsyncTask<String, Void, List<ReleaseGroup>> {
+    private class PagerAdapter extends FragmentPagerAdapter {
 
-        @Override
-        protected List<ReleaseGroup> doInBackground(String ... params) {
-            MusicBrainzService serv = new MusicBrainzService();
+        private int[] titleResourceIds;
+        private Fragment[] fragments;
 
-            try {
-                List<Artist> artists = serv.searchArtist(params[0]);
-                List<ReleaseGroup> entries = serv.getReleaseGroups(artists.get(0).id);
-                //List<Release> releases = serv.getReleases(entries.get(0).id);
-                return entries;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (MusicBrainzServiceTimeout e) {
-                Log.i("MusicBrainzService", "Request timed out");
-                e.printStackTrace();
-            }
+        public PagerAdapter(FragmentManager fm) {
+            super(fm);
 
-            return null;
+            titleResourceIds = new int[] {
+                    R.string.main_tab_album_title,
+                    R.string.main_tab_artist_title,
+                    R.string.main_tab_history_title};
+            fragments = new Fragment[]{
+                    new AlbumFragment(),
+                    new ArtistFragment(),
+                    new HistoryFragment()};
         }
 
         @Override
-        protected void onPostExecute(List<ReleaseGroup> releaseGroups) {
-            super.onPostExecute(releaseGroups);
-            listView.setAdapter(new ReleaseGroupAdapter(releaseGroups));
-        }
-    }
-
-    private class ReleaseGroupAdapter extends BaseAdapter {
-
-        private List<ReleaseGroup> releaseGroups;
-
-        public ReleaseGroupAdapter(List<ReleaseGroup> releaseGroups) {
-            this.releaseGroups = releaseGroups;
-            Collections.sort(this.releaseGroups, new Comparator<ReleaseGroup>() {
-                @Override
-                public int compare(ReleaseGroup lhs, ReleaseGroup rhs) {
-                    if (lhs.releaseDate == null || rhs.releaseDate == null) {
-                        return 0;
-                    }
-                    return lhs.releaseDate.compareTo(rhs.releaseDate);
-                }
-            });
+        public Fragment getItem(int position) {
+            return fragments[position];
         }
 
         @Override
         public int getCount() {
-            return this.releaseGroups.size();
+            return titleResourceIds.length;
         }
 
+
         @Override
-        public Object getItem(int position) {
-            return this.releaseGroups.get(position);
+        public CharSequence getPageTitle(int position) {
+            return getResources().getString(titleResourceIds[position]);
         }
 
+    }
+
+    public static class AlbumFragment extends Fragment {
+
+        @Nullable
         @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
-            }
-            TextView tv1 = (TextView) convertView.findViewById(android.R.id.text1);
-            TextView tv2 = (TextView) convertView.findViewById(android.R.id.text2);
-
-            tv1.setText(this.releaseGroups.get(position).title);
-            tv2.setText(this.releaseGroups.get(position).primaryType);
-
-            return convertView;
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.main_tab_album, container, false);
+            EditText ed = (EditText) v.findViewById(R.id.searchBox);
+            return v;
         }
     }
+
+    public static class ArtistFragment extends Fragment {
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.main_tab_artist, container, false);
+            EditText ed = (EditText) v.findViewById(R.id.searchBox);
+            return v;
+
+        }
+    }
+
+    public static class HistoryFragment extends Fragment {
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }
+    }
+
 }
