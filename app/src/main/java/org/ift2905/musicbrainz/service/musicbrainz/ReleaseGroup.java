@@ -20,6 +20,9 @@ public class ReleaseGroup {
     @Json(name="secondary-types")
     public List<String> secondaryTypes;
 
+    @Json(name="artist-credit")
+    public List<ArtistCredit> artistCredits;
+
     public boolean isAlbum() {
         return this.primaryType.equalsIgnoreCase(ReleaseGroupType.ALBUM);
     }

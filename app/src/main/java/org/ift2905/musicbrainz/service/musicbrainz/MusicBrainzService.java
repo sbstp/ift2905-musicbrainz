@@ -1,5 +1,7 @@
 package org.ift2905.musicbrainz.service.musicbrainz;
 
+import android.util.Log;
+
 import com.squareup.moshi.Json;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -18,7 +20,7 @@ public class MusicBrainzService {
     private static final int DEFAULT_TIMEOUT = 5000;
 
     private OkHttpClient httpClient;
-    private JsonAdapter<SearchArtistResult> artistAdapter;
+    private JsonAdapter<ArtistResult> artistAdapter;
     private JsonAdapter<ReleaseGroupResult> releaseGroupAdapter;
     private JsonAdapter<ReleaseResult> releaseAdapter;
 
@@ -26,7 +28,7 @@ public class MusicBrainzService {
         this.httpClient = new OkHttpClient();
 
         Moshi moshi = new Moshi.Builder().add(new DateAdapter()).build();
-        this.artistAdapter = moshi.adapter(SearchArtistResult.class);
+        this.artistAdapter = moshi.adapter(ArtistResult.class);
         this.releaseGroupAdapter = moshi.adapter(ReleaseGroupResult.class);
         this.releaseAdapter = moshi.adapter(ReleaseResult.class);
     }
@@ -73,7 +75,24 @@ public class MusicBrainzService {
                 .build();
 
         Response res = tryGetResponse(url, timeout);
-        SearchArtistResult se = this.artistAdapter.fromJson(res.body().source());
+        ArtistResult se = this.artistAdapter.fromJson(res.body().source());
+        return se.entries;
+    }
+
+    public List<ReleaseGroup> searchReleaseGroup(String releaseGroup) throws IOException, MusicBrainzServiceTimeout {
+        return searchReleaseGroup(releaseGroup, 10, DEFAULT_TIMEOUT);
+    }
+
+    public List<ReleaseGroup> searchReleaseGroup(String releaseGroup, int limit, int timeout) throws IOException, MusicBrainzServiceTimeout {
+        HttpUrl url = createUrl("release-group")
+                .addQueryParameter("query", releaseGroup)
+                .addQueryParameter("limit", Integer.toString(limit))
+                .build();
+
+        Log.i("Url", url.toString());
+
+        Response res = tryGetResponse(url, timeout);
+        ReleaseGroupResult se = this.releaseGroupAdapter.fromJson(res.body().source());
         return se.entries;
     }
 
@@ -130,17 +149,13 @@ public class MusicBrainzService {
         return rel.entries;
     }
 
-    private static class SearchArtistResult {
+    private static class ArtistResult {
 
         @Json(name = "artists")
         public List<Artist> entries;
     }
 
-
     private static class ReleaseGroupResult {
-
-        @Json(name = "release-group-offset")
-        public int offset;
 
         @Json(name = "release-group-count")
         public int count;

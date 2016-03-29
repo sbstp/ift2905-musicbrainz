@@ -1,13 +1,12 @@
 package org.ift2905.musicbrainz.service.musicbrainz;
 
-public class Artist {
+public class ArtistCredit {
 
-    public String id;
-
-    public String name;
+    public Artist artist;
 
     @Override
     public String toString() {
-        return this.name;
+        return artist.toString();
     }
+
 }
