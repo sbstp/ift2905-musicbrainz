@@ -6,6 +6,8 @@ public class Artist {
 
     public String name;
 
+    public String disambiguation;
+
     @Override
     public String toString() {
         return this.name;

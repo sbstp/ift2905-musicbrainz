@@ -74,6 +74,8 @@ public class MusicBrainzService {
                 .addQueryParameter("limit", Integer.toString(limit))
                 .build();
 
+        Log.i("Url", url.toString());
+
         Response res = tryGetResponse(url, timeout);
         ArtistResult se = this.artistAdapter.fromJson(res.body().source());
         return se.entries;
