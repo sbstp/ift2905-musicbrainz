@@ -1,6 +1,8 @@
 package org.ift2905.musicbrainz.service.musicbrainz;
 
-public class Artist {
+import java.io.Serializable;
+
+public class Artist implements Serializable {
 
     public String id;
 

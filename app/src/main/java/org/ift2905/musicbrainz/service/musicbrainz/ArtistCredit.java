@@ -1,6 +1,8 @@
 package org.ift2905.musicbrainz.service.musicbrainz;
 
-public class ArtistCredit {
+import java.io.Serializable;
+
+public class ArtistCredit implements Serializable {
 
     public Artist artist;
 
