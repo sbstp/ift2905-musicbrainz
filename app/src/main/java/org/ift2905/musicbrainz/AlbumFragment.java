@@ -78,7 +78,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
 
         @Override
         protected List<ReleaseGroup> doInBackground(String... params) {
-            MusicBrainzService serv = new MusicBrainzService();
+            MusicBrainzService serv = MusicBrainzService.getInstance();
             try {
                 return serv.searchReleaseGroup(params[0]);
             } catch (IOException | MusicBrainzServiceTimeout e) {

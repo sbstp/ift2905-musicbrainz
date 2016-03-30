@@ -77,7 +77,7 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
 
         @Override
         protected List<Artist> doInBackground(String... params) {
-            MusicBrainzService serv = new MusicBrainzService();
+            MusicBrainzService serv = MusicBrainzService.getInstance();
             try {
                 return serv.searchArtist(params[0]);
             } catch (IOException | MusicBrainzServiceTimeout e) {

@@ -24,13 +24,23 @@ public class MusicBrainzService {
     private JsonAdapter<ReleaseGroupResult> releaseGroupAdapter;
     private JsonAdapter<ReleaseResult> releaseAdapter;
 
-    public MusicBrainzService() {
+    private MusicBrainzService() {
         this.httpClient = new OkHttpClient();
 
         Moshi moshi = new Moshi.Builder().add(new DateAdapter()).build();
         this.artistAdapter = moshi.adapter(ArtistResult.class);
         this.releaseGroupAdapter = moshi.adapter(ReleaseGroupResult.class);
         this.releaseAdapter = moshi.adapter(ReleaseResult.class);
+    }
+
+    // singleton
+    private static MusicBrainzService service;
+
+    public static MusicBrainzService getInstance() {
+        if (service == null) {
+            service = new MusicBrainzService();
+        }
+        return service;
     }
 
     private HttpUrl.Builder createUrl(String type) {
