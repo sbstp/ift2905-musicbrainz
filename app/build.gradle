@@ -22,10 +22,11 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.squareup.moshi:moshi:1.1.0'
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'org.jsoup:jsoup:1.8.3'
     compile 'com.android.support:design:24.0.0-alpha1'
+    compile 'com.android.support:support-v4:23.2.1'
 }
