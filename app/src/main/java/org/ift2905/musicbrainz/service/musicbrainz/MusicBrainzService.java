@@ -113,14 +113,10 @@ public class MusicBrainzService {
     }
 
     public List<ReleaseGroup> getReleaseGroups(String artistId) throws IOException, MusicBrainzServiceTimeout {
-        return getReleaseGroups(artistId, ReleaseGroupType.ALL);
+        return getReleaseGroups(artistId, DEFAULT_TIMEOUT);
     }
 
-    public List<ReleaseGroup> getReleaseGroups(String artistId, String type) throws IOException, MusicBrainzServiceTimeout {
-        return getReleaseGroups(artistId, type, DEFAULT_TIMEOUT);
-    }
-
-    public List<ReleaseGroup> getReleaseGroups(String artistId, String type, int timeout) throws IOException, MusicBrainzServiceTimeout {
+    public List<ReleaseGroup> getReleaseGroups(String artistId, int timeout) throws IOException, MusicBrainzServiceTimeout {
         int count = 0;
         int max = -1;
 
@@ -131,7 +127,7 @@ public class MusicBrainzService {
                     .addQueryParameter("artist", artistId)
                     .addQueryParameter("limit", "100")
                     .addQueryParameter("offset", Integer.toString(count))
-                    .addQueryParameter("type", type)
+                    .addQueryParameter("inc", "artist-credits")
                     .build();
 
             Log.i("url", url.toString());

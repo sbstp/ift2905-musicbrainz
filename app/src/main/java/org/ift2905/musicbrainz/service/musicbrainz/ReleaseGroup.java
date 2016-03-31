@@ -24,19 +24,11 @@ public class ReleaseGroup implements Serializable {
     @Json(name="artist-credit")
     public List<ArtistCredit> artistCredits;
 
-    public boolean isAlbum() {
-        return this.primaryType.equalsIgnoreCase(ReleaseGroupType.ALBUM);
+    public boolean hasPrimaryType(String primaryType) {
+        return this.primaryType.equalsIgnoreCase(primaryType);
     }
 
-    public boolean isEP() {
-        return this.primaryType.equalsIgnoreCase(ReleaseGroupType.EP);
-    }
-
-    public boolean isSingle() {
-        return this.primaryType.equalsIgnoreCase(ReleaseGroupType.SINGLE);
-    }
-
-    private boolean hasSecondaryType(String secondaryType) {
+    public boolean hasSecondaryType(String secondaryType) {
         for (String type : this.secondaryTypes) {
             if (type.equalsIgnoreCase(secondaryType)) {
                 return true;
@@ -45,19 +37,4 @@ public class ReleaseGroup implements Serializable {
         return false;
     }
 
-    public boolean isCompilation() {
-        return hasSecondaryType(ReleaseGroupType.COMPILATION);
-    }
-
-    public boolean isLive() {
-        return hasSecondaryType(ReleaseGroupType.LIVE);
-    }
-
-    public boolean isRemix() {
-        return hasSecondaryType(ReleaseGroupType.REMIX);
-    }
-
-    public boolean isSoundtrack() {
-        return hasSecondaryType(ReleaseGroupType.SOUNDTRACK);
-    }
 }
