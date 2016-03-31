@@ -51,6 +51,7 @@ public class DiscographyActivity extends AppCompatActivity {
 
     private static int[] SECONDARY_FILTER_TITLES = new int[] {
             R.string.discovery_filter_all,
+            R.string.discovery_filter_none,
             R.string.discovery_filter_compilation,
             R.string.discovery_filter_live,
             R.string.discovery_filter_remix,
@@ -59,6 +60,7 @@ public class DiscographyActivity extends AppCompatActivity {
 
     private static String[] SECONDARY_FILTER_VALUES = new String[] {
             null,
+            ReleaseGroupType.NONE,
             ReleaseGroupType.COMPILATION,
             ReleaseGroupType.LIVE,
             ReleaseGroupType.REMIX,
@@ -120,7 +122,11 @@ public class DiscographyActivity extends AppCompatActivity {
                 }
             }
             if (secondaryFilter != null) {
-                if (!rg.hasSecondaryType(secondaryFilter)) {
+                if (secondaryFilter.equals(ReleaseGroupType.NONE)) {
+                    if (rg.secondaryTypes.size() > 0) {
+                        continue;
+                    }
+                } else if (!rg.hasSecondaryType(secondaryFilter)) {
                     continue;
                 }
             }

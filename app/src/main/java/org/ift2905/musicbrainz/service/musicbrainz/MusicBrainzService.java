@@ -127,6 +127,7 @@ public class MusicBrainzService {
                     .addQueryParameter("artist", artistId)
                     .addQueryParameter("limit", "100")
                     .addQueryParameter("offset", Integer.toString(count))
+                    .addQueryParameter("type", "album|single|ep")
                     .addQueryParameter("inc", "artist-credits")
                     .build();
 
