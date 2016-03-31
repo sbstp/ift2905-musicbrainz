@@ -84,10 +84,12 @@ public class MusicBrainzService {
                 .addQueryParameter("limit", Integer.toString(limit))
                 .build();
 
-        Log.i("Url", url.toString());
+        Log.i("url", url.toString());
 
         Response res = tryGetResponse(url, timeout);
         ArtistResult se = this.artistAdapter.fromJson(res.body().source());
+        res.body().close();
+
         return se.entries;
     }
 
@@ -101,10 +103,12 @@ public class MusicBrainzService {
                 .addQueryParameter("limit", Integer.toString(limit))
                 .build();
 
-        Log.i("Url", url.toString());
+        Log.i("url", url.toString());
 
         Response res = tryGetResponse(url, timeout);
         ReleaseGroupResult se = this.releaseGroupAdapter.fromJson(res.body().source());
+        res.body().close();
+
         return se.entries;
     }
 
@@ -130,8 +134,11 @@ public class MusicBrainzService {
                     .addQueryParameter("type", type)
                     .build();
 
+            Log.i("url", url.toString());
+
             Response res = tryGetResponse(url, timeout);
             ReleaseGroupResult group = this.releaseGroupAdapter.fromJson(res.body().source());
+            res.body().close();
 
             if (max == -1) {
                 max = group.count;
@@ -157,6 +164,7 @@ public class MusicBrainzService {
 
         Response res = tryGetResponse(url, timeout);
         ReleaseResult rel = this.releaseAdapter.fromJson(res.body().source());
+        res.body().close();
 
         return rel.entries;
     }
