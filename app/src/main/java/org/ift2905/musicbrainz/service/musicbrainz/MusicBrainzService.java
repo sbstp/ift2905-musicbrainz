@@ -8,6 +8,7 @@ import com.squareup.moshi.Moshi;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.HttpUrl;
@@ -65,6 +66,8 @@ public class MusicBrainzService {
                 break;
             }
 
+            res.body().close();
+
             long now = System.currentTimeMillis();
             if (Math.abs(now - start) > timeout) {
                 throw new MusicBrainzServiceTimeout();
@@ -120,21 +123,22 @@ public class MusicBrainzService {
         int count = 0;
         int max = -1;
 
-        ArrayList<ReleaseGroup> entries = new ArrayList<>();
+        List<Release> entries = new ArrayList<>();
 
         do {
-            HttpUrl url = createUrl("release-group")
+            HttpUrl url = createUrl("release")
                     .addQueryParameter("artist", artistId)
                     .addQueryParameter("limit", "100")
                     .addQueryParameter("offset", Integer.toString(count))
                     .addQueryParameter("type", "album|single|ep")
-                    .addQueryParameter("inc", "artist-credits")
+                    .addQueryParameter("inc", "release-groups")
+                    .addQueryParameter("status", "official")
                     .build();
 
             Log.i("url", url.toString());
 
             Response res = tryGetResponse(url, timeout);
-            ReleaseGroupResult group = this.releaseGroupAdapter.fromJson(res.body().source());
+            ReleaseResult group = this.releaseAdapter.fromJson(res.body().source());
             res.body().close();
 
             if (max == -1) {
@@ -145,7 +149,26 @@ public class MusicBrainzService {
             entries.addAll(group.entries);
         } while (count < max);
 
-        return entries;
+        return releasesToReleaseGroups(entries);
+    }
+
+    private List<ReleaseGroup> releasesToReleaseGroups(List<Release> releases) {
+        HashMap<String, ReleaseGroup> groups = new HashMap<>();
+        ReleaseGroup group;
+
+        for (Release r : releases) {
+            group = groups.get(r.releaseGroup.id);
+            if (group == null) {
+                group = r.releaseGroup;
+                groups.put(group.id, group);
+            }
+            if (group.releases == null) {
+                group.releases = new ArrayList<>();
+            }
+            group.releases.add(r);
+        }
+
+        return new ArrayList<>(groups.values());
     }
 
     public List<Release> getReleases(String releaseGroupId) throws IOException, MusicBrainzServiceTimeout {
@@ -183,6 +206,9 @@ public class MusicBrainzService {
     }
 
     private static class ReleaseResult {
+
+        @Json(name = "release-count")
+        public int count;
 
         @Json(name = "releases")
         public List<Release> entries;

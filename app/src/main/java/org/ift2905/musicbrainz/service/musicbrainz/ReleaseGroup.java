@@ -18,6 +18,8 @@ public class ReleaseGroup implements Serializable {
     @Json(name="first-release-date")
     public GregorianCalendar releaseDate;
 
+    public List<Release> releases;
+
     @Json(name="secondary-types")
     public List<String> secondaryTypes;
 
