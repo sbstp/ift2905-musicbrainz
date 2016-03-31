@@ -36,7 +36,7 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.main_tab_artist, container, false);
+        View v = inflater.inflate(R.layout.fragment_artist, container, false);
 
         this.inflater = inflater;
         this.searchBox = (EditText) v.findViewById(R.id.searchBox);

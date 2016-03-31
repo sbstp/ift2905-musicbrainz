@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -37,7 +36,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.main_tab_album, container, false);
+        View v = inflater.inflate(R.layout.fragment_album, container, false);
 
         this.inflater = inflater;
         this.searchBox = (EditText) v.findViewById(R.id.searchBox);
