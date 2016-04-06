@@ -21,9 +21,17 @@ public class ReleaseGroupFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_release_group, container, false);
         ReleaseGroup releaseGroup = (ReleaseGroup) getArguments().getSerializable("releaseGroup");
         TextView tv = (TextView) v.findViewById(R.id.textView);
-        tv.setText(releaseGroup.name);
+        tv.setText(formatTitle(releaseGroup));
         ImageView iv = (ImageView) v.findViewById(R.id.imageView);
         Picasso.with(getContext()).load(String.format("http://coverartarchive.org/release-group/%s/front", releaseGroup.id)).into(iv);
         return v;
+    }
+
+    private String formatTitle(ReleaseGroup group) {
+        if (group.year != null) {
+            return String.format("%s (%s)", group.name, group.year);
+        } else {
+            return group.name;
+        }
     }
 }
