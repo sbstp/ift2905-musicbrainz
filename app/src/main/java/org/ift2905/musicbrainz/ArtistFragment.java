@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import org.ift2905.musicbrainz.service.musicbrainz.Artist;
 import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
-import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzServiceTimeout;
 import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
 
 import java.io.IOException;
@@ -80,7 +79,7 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
             MusicBrainzService serv = MusicBrainzService.getInstance();
             try {
                 return serv.searchArtist(params[0]);
-            } catch (IOException | MusicBrainzServiceTimeout e) {
+            } catch (IOException e) {
                 return null;
             }
         }

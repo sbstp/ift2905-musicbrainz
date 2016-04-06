@@ -14,7 +14,6 @@ import android.util.Log;
 import org.ift2905.musicbrainz.fixjava.OnTabSelectedAdapter;
 import org.ift2905.musicbrainz.service.musicbrainz.Artist;
 import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
-import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzServiceTimeout;
 import org.ift2905.musicbrainz.service.musicbrainz.Release;
 import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
 import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroupType;
@@ -145,8 +144,8 @@ public class DiscographyActivity extends AppCompatActivity {
         @Override
         protected List<ReleaseGroup> doInBackground(Void... params) {
             try {
-                return MusicBrainzService.getInstance().getReleaseGroups(artist.id);
-            } catch (IOException | MusicBrainzServiceTimeout e) {
+                return MusicBrainzService.getInstance().getReleaseGroups(artist);
+            } catch (IOException e) {
                 return null;
             }
         }

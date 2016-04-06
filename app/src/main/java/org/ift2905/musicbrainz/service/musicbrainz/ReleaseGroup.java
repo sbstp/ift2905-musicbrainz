@@ -9,22 +9,17 @@ import java.util.List;
 public class ReleaseGroup implements Serializable {
 
     public String id;
+    public String name;
+    public String year;
+    public String month;
+    public String day;
+    public List<Artist> credits;
 
-    public String title;
-
-    @Json(name="primary-type")
+    @Json(name="primary_type")
     public String primaryType;
 
-    @Json(name="first-release-date")
-    public GregorianCalendar releaseDate;
-
-    public List<Release> releases;
-
-    @Json(name="secondary-types")
+    @Json(name="secondary_types")
     public List<String> secondaryTypes;
-
-    @Json(name="artist-credit")
-    public List<ArtistCredit> artistCredits;
 
     public boolean hasPrimaryType(String primaryType) {
         return this.primaryType.equalsIgnoreCase(primaryType);

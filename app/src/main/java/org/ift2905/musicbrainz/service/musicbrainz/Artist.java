@@ -11,10 +11,8 @@ public class Artist implements Serializable {
 
     public String name;
 
+    @Json(name="comment")
     public String disambiguation;
-
-    @Json(name="release-groups")
-    public List<ReleaseGroup> releaseGroups;
 
     @Override
     public String toString() {

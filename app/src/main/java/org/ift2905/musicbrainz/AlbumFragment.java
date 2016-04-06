@@ -20,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
-import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzServiceTimeout;
 import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
 
 import java.io.IOException;
@@ -68,7 +67,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(this.getContext(), DiscographyActivity.class);
-        intent.putExtra("artist", currentReleaseGroups.get(position).artistCredits.get(0).artist);
+        intent.putExtra("artist", currentReleaseGroups.get(position).credits.get(0));
         intent.putExtra("releaseGroup", currentReleaseGroups.get(position));
         startActivity(intent);
     }
@@ -80,7 +79,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
             MusicBrainzService serv = MusicBrainzService.getInstance();
             try {
                 return serv.searchReleaseGroup(params[0]);
-            } catch (IOException | MusicBrainzServiceTimeout e) {
+            } catch (IOException e) {
                 return null;
             }
         }
@@ -124,8 +123,8 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
             TextView tv1 = (TextView) v.findViewById(android.R.id.text1);
             TextView tv2 = (TextView) v.findViewById(android.R.id.text2);
 
-            tv1.setText(albums.get(position).title);
-            tv2.setText(TextUtils.join(", ", albums.get(position).artistCredits));
+            tv1.setText(albums.get(position).name);
+            tv2.setText(TextUtils.join(", ", albums.get(position).credits));
 
             return v;
         }
