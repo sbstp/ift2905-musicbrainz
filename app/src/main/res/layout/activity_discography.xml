@@ -10,17 +10,26 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="center_horizontal" />
 
-    <android.support.design.widget.TabLayout
+    <HorizontalScrollView
+        android:id="@+id/scrollView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/tabLayout2" />
+        android:layout_alignParentBottom="true">
+
+        <android.support.design.widget.TabLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tabLayout2" />
+
+    </HorizontalScrollView>
+
+
 
     <android.support.v4.view.ViewPager
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/viewPager"
         android:layout_below="@id/tabLayout1"
-        android:layout_above="@id/tabLayout2"
+        android:layout_above="@id/scrollView"
         android:layout_gravity="center_horizontal" />
 </RelativeLayout>

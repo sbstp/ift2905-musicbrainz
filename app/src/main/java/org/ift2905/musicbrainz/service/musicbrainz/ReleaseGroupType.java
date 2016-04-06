@@ -10,7 +10,7 @@ public class ReleaseGroupType {
     // secondary types
     public static final String COMPILATION = "compilation";
     public static final String LIVE = "live";
-    public static final String NONE = "none";
+    public static final String STUDIO = "studio";
     public static final String REMIX = "remix";
     public static final String SOUNDTRACK = "soundtrack";
 }

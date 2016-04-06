@@ -14,7 +14,6 @@ import android.util.Log;
 import org.ift2905.musicbrainz.fixjava.OnTabSelectedAdapter;
 import org.ift2905.musicbrainz.service.musicbrainz.Artist;
 import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
-import org.ift2905.musicbrainz.service.musicbrainz.Release;
 import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
 import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroupType;
 
@@ -50,7 +49,7 @@ public class DiscographyActivity extends AppCompatActivity {
 
     private static int[] SECONDARY_FILTER_TITLES = new int[] {
             R.string.discovery_filter_all,
-            R.string.discovery_filter_none,
+            R.string.discovery_filter_studio,
             R.string.discovery_filter_compilation,
             R.string.discovery_filter_live,
             R.string.discovery_filter_remix,
@@ -59,7 +58,7 @@ public class DiscographyActivity extends AppCompatActivity {
 
     private static String[] SECONDARY_FILTER_VALUES = new String[] {
             null,
-            ReleaseGroupType.NONE,
+            ReleaseGroupType.STUDIO,
             ReleaseGroupType.COMPILATION,
             ReleaseGroupType.LIVE,
             ReleaseGroupType.REMIX,
@@ -121,7 +120,7 @@ public class DiscographyActivity extends AppCompatActivity {
                 }
             }
             if (secondaryFilter != null) {
-                if (secondaryFilter.equals(ReleaseGroupType.NONE)) {
+                if (secondaryFilter.equals(ReleaseGroupType.STUDIO)) {
                     if (rg.secondaryTypes.size() > 0) {
                         continue;
                     }
