@@ -13,14 +13,25 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:text="Artistes similaires à: "
         android:id="@+id/sim_txt"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:gravity="center" />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/similarArtistsList" />
+        android:id="@+id/similarArtistsList"
+        android:layout_below="@+id/sim_txt"
+        android:layout_alignParentLeft="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageArtist"
+        android:layout_above="@+id/sim_txt"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
