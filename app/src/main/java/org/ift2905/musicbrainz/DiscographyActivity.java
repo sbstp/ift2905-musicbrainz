@@ -10,6 +10,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import org.ift2905.musicbrainz.fixjava.OnTabSelectedAdapter;
 import org.ift2905.musicbrainz.service.musicbrainz.Artist;
@@ -74,6 +76,8 @@ public class DiscographyActivity extends AppCompatActivity {
         artist = (Artist) intent.getSerializableExtra("artist");
         releaseGroup = (ReleaseGroup) intent.getSerializableExtra("releaseGroup");
 
+        getSupportActionBar().setTitle(artist.name);
+
         tabLayout1 = (TabLayout) findViewById(R.id.tabLayout1);
         buildTabLayout(tabLayout1, PRIMARY_FILTER_TITLES, PRIMARY_FILTER_VALUES);
         tabLayout1.setOnTabSelectedListener(new OnTabSelectedAdapter() {
@@ -97,6 +101,23 @@ public class DiscographyActivity extends AppCompatActivity {
 
         pager = (ViewPager) findViewById(R.id.viewPager);
         new Task().execute();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.discography_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.similar:
+                return true;
+            case R.id.bookmarks:
+                return true;
+        }
+        return false;
     }
 
     private void buildTabLayout(TabLayout tabLayout, int[] titles, String[] values) {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/similar"
+        android:title="@string/discography_menu_similar"/>
+
+    <item android:id="@+id/bookmarks"
+          android:title="@string/discography_menu_bookmarks" />
+
+</menu>

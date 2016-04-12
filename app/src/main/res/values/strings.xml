@@ -18,4 +18,7 @@
     <string name="discovery_filter_studio">Studio</string>
     <string name="discovery_filter_remix">Remix</string>
     <string name="discovery_filter_soundtrack">Soundtrack</string>
+
+    <string name="discography_menu_similar">Find similar artists</string>
+    <string name="discography_menu_bookmarks">Add artist to bookmarks</string>
 </resources>
