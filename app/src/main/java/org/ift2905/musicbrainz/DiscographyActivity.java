@@ -36,10 +36,10 @@ public class DiscographyActivity extends AppCompatActivity {
     private ViewPager pager;
 
     private static int[] PRIMARY_FILTER_TITLES = new int[] {
-            R.string.discovery_filter_all,
-            R.string.discovery_filter_album,
-            R.string.discovery_filter_ep,
-            R.string.discovery_filter_single,
+            R.string.discography_filter_all,
+            R.string.discography_filter_album,
+            R.string.discography_filter_ep,
+            R.string.discography_filter_single,
     };
 
     private static String[] PRIMARY_FILTER_VALUES = new String[] {
@@ -50,12 +50,12 @@ public class DiscographyActivity extends AppCompatActivity {
     };
 
     private static int[] SECONDARY_FILTER_TITLES = new int[] {
-            R.string.discovery_filter_all,
-            R.string.discovery_filter_studio,
-            R.string.discovery_filter_compilation,
-            R.string.discovery_filter_live,
-            R.string.discovery_filter_remix,
-            R.string.discovery_filter_soundtrack,
+            R.string.discography_filter_all,
+            R.string.discography_filter_studio,
+            R.string.discography_filter_compilation,
+            R.string.discography_filter_live,
+            R.string.discography_filter_remix,
+            R.string.discography_filter_soundtrack,
     };
 
     private static String[] SECONDARY_FILTER_VALUES = new String[] {

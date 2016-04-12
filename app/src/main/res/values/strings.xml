@@ -3,22 +3,19 @@
 
     <string name="main_tab_album_title">Album</string>
     <string name="main_tab_album_hint">Search an album</string>
-
     <string name="main_tab_artist_title">Artist</string>
     <string name="main_tab_artist_hint">Search an artist</string>
-
     <string name="main_tab_history_title">History</string>
 
-    <string name="discovery_filter_all">All</string>
-    <string name="discovery_filter_album">Album</string>
-    <string name="discovery_filter_ep">EP</string>
-    <string name="discovery_filter_single">Single</string>
-    <string name="discovery_filter_compilation">Compilation</string>
-    <string name="discovery_filter_live">Live</string>
-    <string name="discovery_filter_studio">Studio</string>
-    <string name="discovery_filter_remix">Remix</string>
-    <string name="discovery_filter_soundtrack">Soundtrack</string>
-
+    <string name="discography_filter_all">All</string>
+    <string name="discography_filter_album">Album</string>
+    <string name="discography_filter_ep">EP</string>
+    <string name="discography_filter_single">Single</string>
+    <string name="discography_filter_compilation">Compilation</string>
+    <string name="discography_filter_live">Live</string>
+    <string name="discography_filter_studio">Studio</string>
+    <string name="discography_filter_remix">Remix</string>
+    <string name="discography_filter_soundtrack">Soundtrack</string>
     <string name="discography_menu_similar">Find similar artists</string>
     <string name="discography_menu_bookmarks">Add artist to bookmarks</string>
 </resources>
