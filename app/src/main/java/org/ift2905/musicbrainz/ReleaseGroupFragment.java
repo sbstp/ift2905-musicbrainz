@@ -28,7 +28,6 @@ public class ReleaseGroupFragment extends Fragment implements View.OnClickListen
         ImageView iv = (ImageView) v.findViewById(R.id.imageView);
         iv.setOnClickListener(this);
         Picasso p = Picasso.with(getContext());
-        p.setIndicatorsEnabled(true);
         p.load(String.format("http://coverartarchive.org/release-group/%s/front", releaseGroup.id))
                 .placeholder(R.drawable.release_group_placeholder)
                 .into(iv);

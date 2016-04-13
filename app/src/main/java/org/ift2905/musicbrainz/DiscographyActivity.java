@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.ift2905.musicbrainz.fixjava.OnTabSelectedAdapter;
+import org.ift2905.musicbrainz.service.bookmarks.BookmarksService;
 import org.ift2905.musicbrainz.service.musicbrainz.Artist;
 import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
 import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
@@ -110,11 +111,29 @@ public class DiscographyActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem addBookmark = menu.findItem(R.id.add_bookmark);
+        MenuItem rmBookmark = menu.findItem(R.id.rm_bookmark);
+
+        boolean bookmarked = new BookmarksService(getApplicationContext()).isBookmarked(artist);
+        addBookmark.setEnabled(!bookmarked);
+        rmBookmark.setEnabled(bookmarked);
+
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.similar:
                 return true;
-            case R.id.bookmarks:
+            case R.id.add_bookmark:
+                new BookmarksService(getApplicationContext()).addBookmark(artist);
+                invalidateOptionsMenu();
+                return true;
+            case R.id.rm_bookmark:
+                new BookmarksService(getApplicationContext()).removeBookmark(artist);
+                invalidateOptionsMenu();
                 return true;
         }
         return false;

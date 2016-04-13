@@ -5,7 +5,7 @@
     <string name="main_tab_album_hint">Search an album</string>
     <string name="main_tab_artist_title">Artist</string>
     <string name="main_tab_artist_hint">Search an artist</string>
-    <string name="main_tab_history_title">History</string>
+    <string name="main_tab_bookmarks_title">Bookmarks</string>
 
     <string name="discography_filter_all">All</string>
     <string name="discography_filter_album">Album</string>
@@ -17,5 +17,6 @@
     <string name="discography_filter_remix">Remix</string>
     <string name="discography_filter_soundtrack">Soundtrack</string>
     <string name="discography_menu_similar">Find similar artists</string>
-    <string name="discography_menu_bookmarks">Add artist to bookmarks</string>
+    <string name="discography_menu_add_bookmark">Add artist to bookmarks</string>
+    <string name="discography_menu_rm_bookmark">Remove artist from bookmarks</string>
 </resources>
