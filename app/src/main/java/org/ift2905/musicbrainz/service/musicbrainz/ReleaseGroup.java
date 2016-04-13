@@ -34,4 +34,10 @@ public class ReleaseGroup implements Serializable {
         return false;
     }
 
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReleaseGroup)) return false;
+        return ((ReleaseGroup) o).id.equals(this.id);
+    }
+
 }

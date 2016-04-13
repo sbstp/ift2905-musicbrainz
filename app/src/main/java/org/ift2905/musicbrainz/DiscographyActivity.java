@@ -170,12 +170,25 @@ public class DiscographyActivity extends AppCompatActivity {
             }
             filtered.add(rg);
         }
-        Log.i("rg", String.format("cut %d to %d", currentReleaseGroups.size(), filtered.size()));
+
         FragmentManager fm = getSupportFragmentManager();
         if (fm.getFragments() != null) {
             fm.getFragments().clear();
         }
         pager.setAdapter(new Adapter(fm, filtered));
+
+        // If the activty was launched by an album search,
+        // we must select the release gr-oup from the list.
+        // Once this is done, we consume the release group
+        // so that it doesn't select the release group on
+        // the next filter.
+        if (releaseGroup != null) {
+            int position = filtered.indexOf(releaseGroup);
+            if (position != -1) {
+                pager.setCurrentItem(position);
+            }
+            releaseGroup = null;
+        }
     }
 
     private class Task extends AsyncTask<Void, Void, List<ReleaseGroup>> {
