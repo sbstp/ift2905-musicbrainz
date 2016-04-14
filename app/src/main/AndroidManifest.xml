@@ -19,7 +19,7 @@
         </activity>
         <activity android:name=".DiscographyActivity"></activity>
         <activity android:name=".ReleaseActivity"></activity>
-        <activity android:name=".similarArtists"></activity>
+        <activity android:name=".SimilarArtistsActivity"></activity>
     </application>
 
 </manifest>

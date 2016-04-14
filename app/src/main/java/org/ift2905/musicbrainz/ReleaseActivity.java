@@ -125,11 +125,7 @@ public class ReleaseActivity extends AppCompatActivity {
 
             Recording rec = recordings.get(position);
 
-            if (position % 2 == 0) {
-                v.setBackgroundColor(Color.WHITE);
-            } else {
-                v.setBackgroundColor(Color.LTGRAY);
-            }
+            Stylist.interweaveListViewBgColor(position, v);
 
             number.setText(String.format("%02d", position + 1));
             title.setText(rec.name);

@@ -1,5 +1,7 @@
 package org.ift2905.musicbrainz.service.musicmap;
 
+import android.util.Log;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -34,6 +36,8 @@ public class MusicMapService {
 
     public List<String> getSimilarArtists(String artist) throws IOException, MusicMapServiceError {
         HttpUrl url = createUrl(artist);
+
+        Log.i("url", url.toString());
 
         Request req = new Request.Builder().url(url).get().build();
         Response res = this.httpClient.newCall(req).execute();
