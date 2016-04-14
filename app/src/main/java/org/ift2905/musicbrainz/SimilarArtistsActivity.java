@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,9 +22,10 @@ import java.util.List;
 
 import static org.ift2905.musicbrainz.R.layout.activity_similar_artists;
 
-public class SimilarArtistsActivity extends AppCompatActivity {
+public class SimilarArtistsActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private Artist artist;
+    private List<String> currentSimilarArtists;
     private LayoutInflater inflater;
     private TextView header;
     private ListView list;
@@ -39,16 +41,25 @@ public class SimilarArtistsActivity extends AppCompatActivity {
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         header = (TextView) findViewById(R.id.header);
         list = (ListView) findViewById(R.id.list);
+        list.setOnItemClickListener(this);
 
         header.setText(getResources().getString(R.string.similar_artists_header, artist.name));
 
         new Task().execute();
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        intent.putExtra("search", currentSimilarArtists.get(position));
+        startActivity(intent);
+    }
+
     private class Task extends AsyncTask<String, Void, List<String>> {
 
         @Override
         protected void onPostExecute(List<String> similarArtists) {
+            currentSimilarArtists = similarArtists;
             list.setAdapter(new Adapter(similarArtists));
         }
 
@@ -65,7 +76,7 @@ public class SimilarArtistsActivity extends AppCompatActivity {
         }
     }
 
-    public class Adapter extends BaseAdapter implements View.OnClickListener {
+    public class Adapter extends BaseAdapter {
 
         private List<String> similarArtists;
 
@@ -89,26 +100,17 @@ public class SimilarArtistsActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
             View v = convertView;
-
             if (v == null) {
                 v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
             }
-
             Stylist.interweaveListViewBgColor(position, v);
 
             TextView tv = (TextView) v.findViewById(android.R.id.text1);
             tv.setText(similarArtists.get(position));
             
             return v;
-        }
-
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(getBaseContext(), MainActivity.class);
-            intent.putExtra("artist", artist);
-            startActivity(intent);
         }
     }
 

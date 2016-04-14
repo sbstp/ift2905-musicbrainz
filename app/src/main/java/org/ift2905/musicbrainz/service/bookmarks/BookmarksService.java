@@ -48,7 +48,7 @@ public class BookmarksService extends SQLiteOpenHelper {
 
     public List<Artist> getBookmarks() {
         Cursor c = getReadableDatabase()
-                .query("bookmarks", new String[] {"id", "name", "comment"}, null, null, null, null, "name");
+                .query("bookmarks", new String[] {"id", "name", "comment"}, null, null, null, null, "name collate nocase asc");
         List<Artist> list = new ArrayList<>();
         while (c.moveToNext()) {
             Artist artist = new Artist();

@@ -68,7 +68,7 @@ public class BookmarksFragment extends Fragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            View v = inflater.inflate(R.layout.list_text_button, parent, false);
+            View v = inflater.inflate(R.layout.list_bookmarks_entry, parent, false);
             TextView tv = (TextView) v.findViewById(R.id.textView);
             ImageButton ib = (ImageButton) v.findViewById(R.id.imageButton);
 

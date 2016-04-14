@@ -1,6 +1,5 @@
 package org.ift2905.musicbrainz;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -27,6 +25,7 @@ import java.util.List;
 
 public class ArtistFragment extends Fragment implements TextView.OnEditorActionListener, AdapterView.OnItemClickListener {
 
+    private String search;
     private LayoutInflater inflater;
     private EditText searchBox;
     private ListView list;
@@ -37,11 +36,18 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_artist, container, false);
 
+        this.search = getArguments().getString("search");
         this.inflater = inflater;
         this.searchBox = (EditText) v.findViewById(R.id.searchBox);
         this.searchBox.setOnEditorActionListener(this);
         this.list = (ListView) v.findViewById(R.id.list);
         this.list.setOnItemClickListener(this);
+
+        if (search != null) {
+            searchBox.setText(search);
+            new Task().execute(search);
+            list.requestFocus();
+        }
 
         return v;
     }
@@ -50,16 +56,11 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH ||
                 actionId == EditorInfo.IME_ACTION_DONE ||
-                event.getAction() == KeyEvent.ACTION_DOWN &&
+                event != null &&
+                        event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            // hide keyboard
-            InputMethodManager inputManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(searchBox.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            // launch api task
             new Task().execute(searchBox.getText().toString());
-
-            return true;
         }
         return false;
     }

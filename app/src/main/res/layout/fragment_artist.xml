@@ -11,7 +11,8 @@
         android:hint="@string/main_tab_artist_hint"
         android:layout_marginTop="20dp"
         android:textAlignment="center"
-        android:inputType="textNoSuggestions" />
+        android:inputType="textNoSuggestions"
+        android:imeOptions="actionDone"/>
 
     <ListView
         android:layout_width="match_parent"

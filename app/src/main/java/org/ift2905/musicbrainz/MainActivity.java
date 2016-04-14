@@ -25,7 +25,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         albumFragment = new AlbumFragment();
+
         artistFragment = new ArtistFragment();
+        String search = getIntent().getStringExtra("search");
+        Bundle args = new Bundle();
+        args.putString("search", search);
+        artistFragment.setArguments(args);
+
         bookmarksFragment = new BookmarksFragment();
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -34,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(viewPager);
+
+        if (search != null) {
+            viewPager.setCurrentItem(1);
+        }
     }
 
     @Override
