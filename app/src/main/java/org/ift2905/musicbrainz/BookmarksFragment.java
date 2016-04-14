@@ -5,11 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -17,17 +15,14 @@ import android.widget.TextView;
 
 import org.ift2905.musicbrainz.service.bookmarks.BookmarksService;
 import org.ift2905.musicbrainz.service.musicbrainz.Artist;
-import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
-import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
 
 import java.util.List;
 
-public class BookmarksFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class BookmarksFragment extends Fragment {
 
     private BookmarksService bookmarksService;
     private LayoutInflater inflater;
     private ListView listView;
-    private List<Artist> currentArtists;
 
     @Nullable
     @Override
@@ -37,7 +32,6 @@ public class BookmarksFragment extends Fragment implements AdapterView.OnItemCli
         bookmarksService = new BookmarksService(getContext());
         this.inflater = inflater;
         listView = (ListView) v.findViewById(R.id.listView);
-        listView.setOnItemClickListener(this);
         refresh();
 
         return v;
@@ -45,17 +39,8 @@ public class BookmarksFragment extends Fragment implements AdapterView.OnItemCli
 
     public void refresh() {
         if (getContext() != null) {
-            currentArtists = bookmarksService.getBookmarks();
-            listView.setAdapter(new Adapter(currentArtists));
+            listView.setAdapter(new Adapter(bookmarksService.getBookmarks()));
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this.getContext(), DiscographyActivity.class);
-        intent.putExtra("artist", currentArtists.get(position));
-        intent.putExtra("releaseGroup", (ReleaseGroup) null);
-        startActivity(intent);
     }
 
     private class Adapter extends BaseAdapter {
@@ -86,8 +71,19 @@ public class BookmarksFragment extends Fragment implements AdapterView.OnItemCli
             View v = inflater.inflate(R.layout.list_text_button, parent, false);
             TextView tv = (TextView) v.findViewById(R.id.textView);
             ImageButton ib = (ImageButton) v.findViewById(R.id.imageButton);
+
             final Artist artist = artists.get(position);
             tv.setText(artist.name);
+
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getContext(), DiscographyActivity.class);
+                    intent.putExtra("artist", artist);
+                    startActivity(intent);
+                }
+            });
+
             ib.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,6 +91,7 @@ public class BookmarksFragment extends Fragment implements AdapterView.OnItemCli
                     refresh();
                 }
             });
+
             return v;
         }
     }

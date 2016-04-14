@@ -131,7 +131,7 @@ public class ReleaseActivity extends AppCompatActivity {
                 v.setBackgroundColor(Color.LTGRAY);
             }
 
-            number.setText(String.format("%02d", position));
+            number.setText(String.format("%02d", position + 1));
             title.setText(rec.name);
             duration.setText(secondsToText(Integer.parseInt(rec.length)));
 
