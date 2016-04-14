@@ -7,6 +7,10 @@
     <string name="main_tab_artist_hint">Search an artist</string>
     <string name="main_tab_bookmarks_title">Bookmarks</string>
 
+    <string name="release_number">#</string>
+    <string name="release_track">Track</string>
+    <string name="release_duration">Duration</string>
+
     <string name="discography_filter_all">All</string>
     <string name="discography_filter_album">Album</string>
     <string name="discography_filter_ep">EP</string>

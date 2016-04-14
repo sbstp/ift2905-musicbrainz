@@ -209,7 +209,7 @@ public class DiscographyActivity extends AppCompatActivity {
         }
     }
 
-    private static class Adapter extends FragmentPagerAdapter {
+    private class Adapter extends FragmentPagerAdapter {
 
         private List<ReleaseGroup> albums;
 
@@ -227,6 +227,7 @@ public class DiscographyActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             ReleaseGroupFragment f = new ReleaseGroupFragment();
             Bundle args = new Bundle();
+            args.putSerializable("artist", artist);
             args.putSerializable("releaseGroup", albums.get(position));
             f.setArguments(args);
             return f;

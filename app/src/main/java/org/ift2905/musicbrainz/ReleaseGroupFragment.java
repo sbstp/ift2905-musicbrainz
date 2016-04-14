@@ -16,20 +16,27 @@ import org.ift2905.musicbrainz.service.musicbrainz.*;
 
 public class ReleaseGroupFragment extends Fragment implements View.OnClickListener {
 
+    private Artist artist;
     private ReleaseGroup releaseGroup;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_release_group, container, false);
+
+        artist = (Artist) getArguments().getSerializable("artist");
         releaseGroup = (ReleaseGroup) getArguments().getSerializable("releaseGroup");
+
         TextView tv = (TextView) v.findViewById(R.id.textView);
         tv.setText(formatTitle(releaseGroup));
+
         ImageView iv = (ImageView) v.findViewById(R.id.imageView);
         iv.setOnClickListener(this);
-        Picasso p = Picasso.with(getContext());
-        p.load(String.format("http://coverartarchive.org/release-group/%s/front", releaseGroup.id))
+        Picasso.with(getContext())
+                .load(String.format("http://coverartarchive.org/release-group/%s/front", releaseGroup.id))
                 .placeholder(R.drawable.release_group_placeholder)
+                .fit()
+                .centerInside()
                 .into(iv);
         return v;
     }
@@ -44,8 +51,9 @@ public class ReleaseGroupFragment extends Fragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(getContext(), Release.class);
+        Intent intent = new Intent(getContext(), ReleaseActivity.class);
+        intent.putExtra("artist", artist);
         intent.putExtra("releaseGroup", releaseGroup);
-        //startActivity(intent);
+        startActivity(intent);
     }
 }
