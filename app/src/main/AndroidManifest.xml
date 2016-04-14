@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DiscographyActivity"></activity>
+        <activity android:name=".similarArtists"></activity>
     </application>
 
 </manifest>

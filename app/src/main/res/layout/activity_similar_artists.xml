@@ -13,7 +13,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Artistes similaires à: "
         android:id="@+id/sim_txt"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"

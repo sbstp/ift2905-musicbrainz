@@ -36,7 +36,7 @@ public class similarArtists extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(activity_similar_artists);
         Intent intent = getIntent();
-        artist = (Artist) intent.getSerializableExtra("artist");
+        this.artist = (Artist) intent.getSerializableExtra("artist");
     }
 
     public class RunSimArtist extends AsyncTask<String, Void, List<String>> {
@@ -44,8 +44,9 @@ public class similarArtists extends AppCompatActivity{
        @Override
        protected void onPostExecute(List<String> strings) {
            super.onPostExecute(strings);
-           adapter = new MyAdapter((List<Artist>) artist, inflater);//manque nom artiste(s)? en paramètre
+           this.adapter = new MyAdapter((List<Artist>) artist, inflater);
            list.setAdapter(adapter);
+           list.setOnItemClickListener(similarArtists.class);
        }
 
        @Override
@@ -64,7 +65,6 @@ public class similarArtists extends AppCompatActivity{
    }
 
     public class MyAdapter extends BaseAdapter implements View.OnClickListener {
-        private LayoutInflater inflater;
         private List<Artist> artistsA;
 
         public MyAdapter(List<Artist> artistsA, LayoutInflater inflater){
@@ -93,7 +93,7 @@ public class similarArtists extends AppCompatActivity{
             if (v==null) {
                 v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
             }
-            TextView tv = (TextView)v.findViewById(android.R.id.text1);
+            TextView tv = (TextView)v.findViewById(R.id.sim_txt);
             tv.setOnClickListener(this);
 
             ImageView im = (ImageView)v.findViewById(R.id.imageArtist);
@@ -102,7 +102,7 @@ public class similarArtists extends AppCompatActivity{
                     .placeholder(R.drawable.release_group_placeholder)
                     .into(im);
             String similaire = similarArtistList.get(position);
-            tv.setText(similaire);
+            tv.setText("Artistes similaires à:  " + similaire);
             return  v;
         }
 

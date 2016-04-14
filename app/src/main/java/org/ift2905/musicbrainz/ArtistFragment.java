@@ -66,7 +66,7 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(this.getContext(), DiscographyActivity.class);
+        Intent intent = new Intent(this.getContext(), similarArtists.class);
         intent.putExtra("artist", currentArtists.get(position));
         intent.putExtra("releaseGroup", (ReleaseGroup) null);
         startActivity(intent);
