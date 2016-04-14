@@ -31,7 +31,7 @@ public class MusicBrainzService {
         this.artistAdapter = moshi.adapter(Types.newParameterizedType(List.class, Artist.class));
         this.releaseGroupAdapter = moshi.adapter(Types.newParameterizedType(List.class, ReleaseGroup.class));
         this.releaseAdapter = moshi.adapter(Types.newParameterizedType(List.class, Release.class));
-    }
+    } 
 
     // singleton
     private static MusicBrainzService service;
