@@ -180,7 +180,7 @@ public class DiscographyActivity extends AppCompatActivity {
         pager.setAdapter(new Adapter(fm, filtered));
 
         // If the activty was launched by an album search,
-        // we must select the release gr-oup from the list.
+        // we must select the release group from the list.
         // Once this is done, we consume the release group
         // so that it doesn't select the release group on
         // the next filter.
