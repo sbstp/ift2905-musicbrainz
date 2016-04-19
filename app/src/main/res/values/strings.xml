@@ -3,10 +3,13 @@
 
     <string name="main_tab_album_title">Album</string>
     <string name="main_tab_album_hint">Search an album</string>
+    <string name="main_tab_album_empty">No albums found.</string>
     <string name="main_tab_artist_title">Artist</string>
     <string name="main_tab_artist_hint">Search an artist</string>
+    <string name="main_tab_artist_empty">No artists found.</string>
     <string name="main_tab_bookmarks_title">Bookmarks</string>
     <string name="main_tab_bookmarks_hint">Filter bookmarks</string>
+    <string name="main_tab_bookmarks_empty">You do not have any bookmarks.</string>
 
     <string name="release_number">#</string>
     <string name="release_track">Track</string>

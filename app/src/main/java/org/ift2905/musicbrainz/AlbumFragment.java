@@ -1,6 +1,6 @@
 package org.ift2905.musicbrainz;
 
-import android.content.Context;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -30,6 +29,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
     private LayoutInflater inflater;
     private EditText searchBox;
     private ListView list;
+    private ProgressDialog progressDialog;
     private List<ReleaseGroup> currentReleaseGroups;
 
     @Nullable
@@ -42,6 +42,8 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
         this.searchBox.setOnEditorActionListener(this);
         this.list = (ListView) v.findViewById(R.id.list);
         this.list.setOnItemClickListener(this);
+        this.list.setEmptyView(v.findViewById(android.R.id.empty));
+        this.progressDialog = Stylist.makeProgressDialog(getContext());
 
         return v;
     }
@@ -54,6 +56,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
             // launch api task
+            progressDialog.show();
             new Task().execute(searchBox.getText().toString());
         }
         return false;
@@ -83,6 +86,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
         protected void onPostExecute(List<ReleaseGroup> releaseGroups) {
             currentReleaseGroups = releaseGroups;
             list.setAdapter(new Adapter(releaseGroups, inflater));
+            progressDialog.dismiss();
         }
     }
 

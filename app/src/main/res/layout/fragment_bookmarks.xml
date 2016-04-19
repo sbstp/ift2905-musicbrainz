@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
 
     <EditText
         android:layout_width="match_parent"
@@ -21,11 +20,21 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
+        android:id="@+id/list"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/editText"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/editText"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:text="@string/main_tab_bookmarks_empty" />
+
 </RelativeLayout>

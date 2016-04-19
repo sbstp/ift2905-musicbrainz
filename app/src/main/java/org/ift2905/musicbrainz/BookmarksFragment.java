@@ -1,14 +1,10 @@
 package org.ift2905.musicbrainz;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +25,7 @@ public class BookmarksFragment extends Fragment {
 
     private BookmarksService bookmarksService;
     private LayoutInflater inflater;
-    private ListView listView;
+    private ListView list;
     private EditText editText;
     private String filter;
 
@@ -41,7 +37,8 @@ public class BookmarksFragment extends Fragment {
         bookmarksService = new BookmarksService(getContext());
         this.inflater = inflater;
         editText = (EditText) v.findViewById(R.id.editText);
-        listView = (ListView) v.findViewById(R.id.listView);
+        list = (ListView) v.findViewById(R.id.list);
+        list.setEmptyView(v.findViewById(android.R.id.empty));
         refresh();
 
         editText.addTextChangedListener(new TextWatcherAdapter() {
@@ -72,7 +69,7 @@ public class BookmarksFragment extends Fragment {
                     }
                 }
             }
-            listView.setAdapter(new Adapter(filtered));
+            list.setAdapter(new Adapter(filtered));
         }
     }
 

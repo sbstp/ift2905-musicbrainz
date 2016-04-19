@@ -1,7 +1,6 @@
 package org.ift2905.musicbrainz;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -49,7 +48,7 @@ public class ReleaseActivity extends AppCompatActivity {
 
         artiste = (TextView) findViewById(R.id.artiste);
         album = (TextView) findViewById(R.id.album);
-        listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.list);
         imageView = (ImageView) findViewById(R.id.imageView);
 
 
