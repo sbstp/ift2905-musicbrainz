@@ -55,8 +55,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
                 event != null &&
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-            // launch api task
-            progressDialog.show();
+
             new Task().execute(searchBox.getText().toString());
         }
         return false;
@@ -71,6 +70,11 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
     }
 
     private class Task extends AsyncTask<String, Void, List<ReleaseGroup>> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
 
         @Override
         protected List<ReleaseGroup> doInBackground(String... params) {

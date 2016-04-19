@@ -64,7 +64,6 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            progressDialog.show();
             new Task().execute(searchBox.getText().toString());
         }
         return false;
@@ -79,6 +78,11 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
     }
 
     private class Task extends AsyncTask<String, Void, List<Artist>> {
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.show();
+        }
 
         @Override
         protected List<Artist> doInBackground(String... params) {

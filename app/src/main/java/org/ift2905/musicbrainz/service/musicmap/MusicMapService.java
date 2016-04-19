@@ -24,8 +24,13 @@ public class MusicMapService {
         this.httpClient = new OkHttpClient();
     }
 
+    private String stripInvalidChars(String artist) {
+        // TODO: this is awful for i18n
+        return artist.replaceAll("[^a-zA-Z0-9\\s]", "").toLowerCase();
+    }
+
     private HttpUrl createUrl(String artist) {
-        String segment = String.format("%s.html", artist.toLowerCase());
+        String segment = String.format("%s.html", stripInvalidChars(artist));
 
         return new HttpUrl.Builder()
                 .scheme("http")
