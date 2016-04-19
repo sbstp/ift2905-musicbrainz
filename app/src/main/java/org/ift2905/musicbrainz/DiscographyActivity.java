@@ -222,11 +222,22 @@ public class DiscographyActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return albums.size();
+            // If the album list is empty, we must show
+            // the empty view fragment.
+            return albums.size() == 0 ? 1 : albums.size();
         }
 
         @Override
         public Fragment getItem(int position) {
+            // List is empty, show the empty view fragment.
+            if (albums.size() == 0 && position == 0) {
+                EmptyViewFragment f = new EmptyViewFragment();
+                Bundle args = new Bundle();
+                args.putString("message", getResources().getString(R.string.discography_empty));
+                f.setArguments(args);
+                return f;
+            }
+
             ReleaseGroupFragment f = new ReleaseGroupFragment();
             Bundle args = new Bundle();
             args.putSerializable("artist", artist);
