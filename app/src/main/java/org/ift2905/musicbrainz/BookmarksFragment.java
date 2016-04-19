@@ -5,17 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.ift2905.musicbrainz.fixjava.TextWatcherAdapter;
 import org.ift2905.musicbrainz.service.bookmarks.BookmarksService;
 import org.ift2905.musicbrainz.service.musicbrainz.Artist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookmarksFragment extends Fragment {
@@ -23,6 +30,8 @@ public class BookmarksFragment extends Fragment {
     private BookmarksService bookmarksService;
     private LayoutInflater inflater;
     private ListView listView;
+    private EditText editText;
+    private String filter;
 
     @Nullable
     @Override
@@ -31,15 +40,39 @@ public class BookmarksFragment extends Fragment {
 
         bookmarksService = new BookmarksService(getContext());
         this.inflater = inflater;
+        editText = (EditText) v.findViewById(R.id.editText);
         listView = (ListView) v.findViewById(R.id.listView);
         refresh();
+
+        editText.addTextChangedListener(new TextWatcherAdapter() {
+            @Override
+            public void afterTextChanged(Editable e) {
+                filter = e.length() == 0 ? null : e.toString();
+                refresh();
+            }
+        });
 
         return v;
     }
 
     public void refresh() {
         if (getContext() != null) {
-            listView.setAdapter(new Adapter(bookmarksService.getBookmarks()));
+            List<Artist> bookmarks = bookmarksService.getBookmarks();
+            List<Artist> filtered;
+
+            if (filter == null) {
+                filtered = bookmarks;
+            } else {
+                String lofilter = filter.toLowerCase();
+                filtered = new ArrayList<>();
+
+                for (Artist a : bookmarks) {
+                    if (a.name.toLowerCase().contains(lofilter)) {
+                        filtered.add(a);
+                    }
+                }
+            }
+            listView.setAdapter(new Adapter(filtered));
         }
     }
 

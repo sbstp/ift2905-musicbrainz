@@ -6,6 +6,7 @@
     <string name="main_tab_artist_title">Artist</string>
     <string name="main_tab_artist_hint">Search an artist</string>
     <string name="main_tab_bookmarks_title">Bookmarks</string>
+    <string name="main_tab_bookmarks_hint">Filter bookmarks</string>
 
     <string name="release_number">#</string>
     <string name="release_track">Track</string>
