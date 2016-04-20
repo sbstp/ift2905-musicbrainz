@@ -4,15 +4,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import org.ift2905.musicbrainz.service.musicbrainz.Artist;
 import org.ift2905.musicbrainz.service.musicbrainz.MusicBrainzService;
@@ -21,6 +19,7 @@ import org.ift2905.musicbrainz.service.musicbrainz.Release;
 import org.ift2905.musicbrainz.service.musicbrainz.ReleaseGroup;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReleaseActivity extends AppCompatActivity {
@@ -28,14 +27,8 @@ public class ReleaseActivity extends AppCompatActivity {
     private Artist artist;
     private ReleaseGroup releaseGroup;
 
-    private TextView artiste;
-    private TextView album;
+    private LayoutInflater inflater;
     private ListView listView;
-    private ImageView imageView;
-    private MusicBrainzService service;
-    private Release release;
-    private List<Release> releases;
-    private List<Recording> recordings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,60 +39,144 @@ public class ReleaseActivity extends AppCompatActivity {
         artist = (Artist) intent.getSerializableExtra("artist");
         releaseGroup = (ReleaseGroup) intent.getSerializableExtra("releaseGroup");
 
-        artiste = (TextView) findViewById(R.id.artiste);
-        album = (TextView) findViewById(R.id.album);
+        getSupportActionBar().setTitle(releaseGroup.name);
+
+        inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         listView = (ListView) findViewById(R.id.list);
-        imageView = (ImageView) findViewById(R.id.imageView);
 
-
-        artiste.setText(artist.name);
-        album.setText(releaseGroup.name);
-
-        Picasso.with(getApplicationContext())
-                .load(String.format("http://coverartarchive.org/release-group/%s/front", releaseGroup.id))
-                .placeholder(R.drawable.release_group_placeholder)
-                .into(imageView);
-
-        RunAPI run = new RunAPI();
-        run.execute();
+        new Task().execute();
     }
 
-    public class RunAPI extends AsyncTask<String, Object, Release> {
+    public class Task extends AsyncTask<Void, Void, List<ListItem>> {
+
         @Override
-        protected void onPostExecute(Release release) {
-            super.onPostExecute(release);
-            listView.setAdapter(new Adapter());
+        protected void onPostExecute(List<ListItem> items) {
+            listView.setAdapter(new Adapter(items));
         }
 
         @Override
-        protected Release doInBackground(String... params) {
-            service = MusicBrainzService.getInstance();
-            releases = null;
+        protected List<ListItem> doInBackground(Void... params) {
+            List<Release> releases;
 
             try {
-                releases = service.getReleases(releaseGroup);
+                releases = MusicBrainzService.getInstance().getReleases(releaseGroup);
             } catch (IOException e) {
-                e.printStackTrace();
+                return null;
             }
-            release = releases.get(0);
 
-            recordings = release.recordings;
+            return flattenExtraReleases(diffReleases(releases));
+        }
+    }
 
-            return release;
+    // TODO: complexity is like O(n^2)
+    private List<Release> diffReleases(List<Release> releases) {
+        List<Release> extraReleases = new ArrayList<>();
+        List<Recording> marked = new ArrayList<>();
+
+        for (Release rel : releases) {
+            List<Recording> extraRecordings = new ArrayList<>();
+            for (Recording rec : rel.recordings) {
+                if (!marked.contains(rec)) {
+                    extraRecordings.add(rec);
+                    marked.add(rec);
+                }
+            }
+
+            if (extraRecordings.size() > 0) {
+                Release newRel = rel.cloneWithoutRecordings();
+                newRel.recordings = extraRecordings;
+                extraReleases.add(newRel);
+            }
+        }
+
+        return extraReleases;
+    }
+
+    private List<ListItem> flattenExtraReleases(List<Release> extraReleases) {
+        List<ListItem> list = new ArrayList<>();
+        for (Release rel : extraReleases) {
+            list.add(new ListItemRelease(rel));
+            int position = 0;
+            for (Recording rec : rel.recordings) {
+                list.add(new ListItemRecording(position++, rec));
+            }
+        }
+        return list;
+    }
+
+    private interface ListItem {
+
+        View getView(ViewGroup parent);
+
+    }
+
+    private class ListItemRelease implements ListItem {
+
+        private Release release;
+
+        public ListItemRelease(Release release) {
+            this.release = release;
+        }
+
+        @Override
+        public View getView(ViewGroup parent) {
+            View v = inflater.inflate(R.layout.list_release_release, parent, false);
+
+            TextView name = (TextView) v.findViewById(R.id.name);
+            TextView date = (TextView) v.findViewById(R.id.date);
+            TextView areas = (TextView) v.findViewById(R.id.areas);
+
+            name.setText(release.name);
+            date.setText(release.year);
+            areas.setText(TextUtils.join(", ", release.areas));
+
+            return v;
+        }
+    }
+
+    private class ListItemRecording implements ListItem {
+
+        private int position;
+        private Recording recording;
+
+        public ListItemRecording(int position, Recording recording) {
+            this.position = position;
+            this.recording = recording;
+        }
+
+        @Override
+        public View getView(ViewGroup parent) {
+            View v = inflater.inflate(R.layout.list_release_recording, parent, false);
+
+            TextView number = (TextView) v.findViewById(R.id.number);
+            TextView title = (TextView) v.findViewById(R.id.title);
+            TextView duration = (TextView) v.findViewById(R.id.duration);
+
+            Stylist.interweaveListViewBgColor(position, v);
+
+            number.setText(String.format("%02d", position + 1));
+            title.setText(recording.name);
+            if (recording.length != null && !recording.length.isEmpty()) {
+                duration.setText(Stylist.secondsToText(Integer.parseInt(recording.length)));
+            } else {
+                duration.setText("");
+            }
+
+            return v;
         }
     }
 
     private class Adapter extends BaseAdapter {
 
-        private LayoutInflater inflateur;
+        private List<ListItem> items;
 
-        public Adapter() {
-            inflateur = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        public Adapter(List<ListItem> items) {
+            this.items = items;
         }
 
         @Override
         public int getCount() {
-            return recordings.size();
+            return items.size();
         }
 
         @Override
@@ -114,30 +191,7 @@ public class ReleaseActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, View v, ViewGroup parent) {
-            if (v == null) {
-                v = inflateur.inflate(R.layout.list_release_track, parent, false);
-            }
-
-            TextView number = (TextView) v.findViewById(R.id.number);
-            TextView title = (TextView) v.findViewById(R.id.title);
-            TextView duration = (TextView) v.findViewById(R.id.duration);
-
-            Recording rec = recordings.get(position);
-
-            Stylist.interweaveListViewBgColor(position, v);
-
-            number.setText(String.format("%02d", position + 1));
-            title.setText(rec.name);
-            duration.setText(secondsToText(Integer.parseInt(rec.length)));
-
-            return v;
-        }
-
-        private String secondsToText(int secs) {
-            secs /= 1000;
-            int minutes = secs / 60;
-            int seconds = secs % 60;
-            return String.format("%02d:%02d", minutes, seconds);
+            return items.get(position).getView(parent);
         }
 
     }

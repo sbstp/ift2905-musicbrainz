@@ -1,20 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textAlignment="center" />
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="centerCrop"
         android:id="@+id/imageView"
         android:layout_gravity="center_horizontal" />
-</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/bottom_panel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/blackTransparent"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
+
+        <TextView
+            android:id="@+id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextWhiteMedium"
+            android:text="year"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextWhiteMedium"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:text="abc" />
+
+        <TextView
+            android:id="@+id/primaryType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:text="primary type"
+            android:textAppearance="@style/TextWhiteSmall" />
+
+        <TextView
+            android:id="@+id/secondaryTypes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="end"
+            android:text="secondary types"
+            android:layout_below="@id/year"
+            android:textAppearance="@style/TextWhiteSmall"
+            android:layout_toRightOf="@id/primaryType" />
+
+    </RelativeLayout>
+</RelativeLayout>

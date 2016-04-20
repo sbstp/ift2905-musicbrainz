@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,26 +28,27 @@ public class ReleaseGroupFragment extends Fragment implements View.OnClickListen
         artist = (Artist) getArguments().getSerializable("artist");
         releaseGroup = (ReleaseGroup) getArguments().getSerializable("releaseGroup");
 
-        TextView tv = (TextView) v.findViewById(R.id.textView);
-        tv.setText(formatTitle(releaseGroup));
+        TextView name = (TextView) v.findViewById(R.id.name);
+        TextView year = (TextView) v.findViewById(R.id.year);
+        TextView primaryType = (TextView) v.findViewById(R.id.primaryType);
+        TextView secondaryTypes = (TextView) v.findViewById(R.id.secondaryTypes);
+
+        name.setText(releaseGroup.name);
+        year.setText(releaseGroup.year);
+        // TODO: i18n types
+        primaryType.setText(releaseGroup.primaryType);
+        secondaryTypes.setText(TextUtils.join(" + ", releaseGroup.secondaryTypes));
 
         ImageView iv = (ImageView) v.findViewById(R.id.imageView);
         iv.setOnClickListener(this);
         Picasso.with(getContext())
                 .load(String.format("http://coverartarchive.org/release-group/%s/front", releaseGroup.id))
-                .placeholder(R.drawable.release_group_placeholder)
                 .fit()
-                .centerInside()
+                .centerCrop()
+                .error(R.drawable.empty_album)
+                .placeholder(R.drawable.empty_album)
                 .into(iv);
         return v;
-    }
-
-    private String formatTitle(ReleaseGroup group) {
-        if (group.year != null) {
-            return String.format("%s (%s)", group.name, group.year);
-        } else {
-            return group.name;
-        }
     }
 
     @Override

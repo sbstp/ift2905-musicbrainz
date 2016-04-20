@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.View;
-import android.widget.ProgressBar;
 
 public class Stylist {
 
@@ -21,6 +20,13 @@ public class Stylist {
         } else {
             v.setBackgroundColor(Color.LTGRAY);
         }
+    }
+
+    public static String secondsToText(int secs) {
+        secs /= 1000;
+        int minutes = secs / 60;
+        int seconds = secs % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
 }
