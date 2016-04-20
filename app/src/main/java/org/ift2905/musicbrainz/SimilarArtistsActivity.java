@@ -42,6 +42,7 @@ public class SimilarArtistsActivity extends AppCompatActivity implements Adapter
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         list = (ListView) findViewById(R.id.list);
         list.setOnItemClickListener(this);
+        list.setEmptyView(findViewById(android.R.id.empty));
 
         new Task().execute();
     }

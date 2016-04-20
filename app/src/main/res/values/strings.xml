@@ -16,6 +16,7 @@
     <string name="release_duration">Duration</string>
 
     <string name="similar_artists_header">Similar artists to %s</string>
+    <string name="similar_artists_empty">No similar artists could be found.</string>
 
     <string name="discography_filter_all">All</string>
     <string name="discography_filter_album">Album</string>
