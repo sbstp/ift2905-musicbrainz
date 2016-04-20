@@ -128,7 +128,7 @@ public class ReleaseActivity extends AppCompatActivity {
 
             name.setText(release.name);
             date.setText(release.year);
-            areas.setText(TextUtils.join(", ", release.areas));
+            areas.setText(TextUtils.join(", ", release.areas).replaceAll("(\\[|\\])", ""));
 
             return v;
         }

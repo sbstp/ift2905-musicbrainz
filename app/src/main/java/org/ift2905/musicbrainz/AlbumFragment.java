@@ -56,7 +56,9 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            new Task().execute(searchBox.getText().toString());
+            if (searchBox.length() > 0) {
+                new Task().execute(searchBox.getText().toString());
+            }
         }
         return false;
     }
@@ -78,9 +80,8 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
 
         @Override
         protected List<ReleaseGroup> doInBackground(String... params) {
-            MusicBrainzService serv = MusicBrainzService.getInstance();
             try {
-                return serv.searchReleaseGroup(params[0]);
+                return MusicBrainzService.getInstance().searchReleaseGroup(params[0]);
             } catch (IOException e) {
                 return null;
             }

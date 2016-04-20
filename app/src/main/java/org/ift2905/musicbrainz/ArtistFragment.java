@@ -64,7 +64,9 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
                         event.getAction() == KeyEvent.ACTION_DOWN &&
                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
 
-            new Task().execute(searchBox.getText().toString());
+            if (searchBox.length() > 0) {
+                new Task().execute(searchBox.getText().toString());
+            }
         }
         return false;
     }
