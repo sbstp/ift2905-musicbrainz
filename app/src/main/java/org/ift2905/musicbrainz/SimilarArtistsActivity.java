@@ -27,7 +27,6 @@ public class SimilarArtistsActivity extends AppCompatActivity implements Adapter
     private Artist artist;
     private List<String> currentSimilarArtists;
     private LayoutInflater inflater;
-    private TextView header;
     private ListView list;
 
     @Override
@@ -38,12 +37,11 @@ public class SimilarArtistsActivity extends AppCompatActivity implements Adapter
         Intent intent = getIntent();
         artist = (Artist) intent.getSerializableExtra("artist");
 
+        getSupportActionBar().setTitle(getResources().getString(R.string.similar_artists_header, artist.name));
+
         inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        header = (TextView) findViewById(R.id.header);
         list = (ListView) findViewById(R.id.list);
         list.setOnItemClickListener(this);
-
-        header.setText(getResources().getString(R.string.similar_artists_header, artist.name));
 
         new Task().execute();
     }
