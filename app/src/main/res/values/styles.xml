@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextWhiteMedium" parent="android:TextAppearance.DeviceDefault.Medium">
+        <item name="android:textColor">#eee</item>
+    </style>
+
+    <style name="TextWhiteSmall" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">#eee</item>
+    </style>
+
 </resources>

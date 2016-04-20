@@ -23,4 +23,11 @@ public class Stylist {
         }
     }
 
+    public static String secondsToText(int secs) {
+        secs /= 1000;
+        int minutes = secs / 60;
+        int seconds = secs % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+
 }
