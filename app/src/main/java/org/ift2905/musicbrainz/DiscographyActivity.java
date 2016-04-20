@@ -1,5 +1,6 @@
 package org.ift2905.musicbrainz;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
@@ -97,9 +98,8 @@ public class DiscographyActivity extends AppCompatActivity {
                 updateFilter();
             }
         });
-
-
         pager = (ViewPager) findViewById(R.id.viewPager);
+
         new Task().execute();
     }
 
@@ -206,8 +206,12 @@ public class DiscographyActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<ReleaseGroup> releaseGroups) {
-            currentReleaseGroups = releaseGroups;
-            updateFilter();
+            if (releaseGroups != null) {
+                currentReleaseGroups = releaseGroups;
+                updateFilter();
+            } else {
+                Util.ioErrorDialog(DiscographyActivity.this, true).show();
+            }
         }
     }
 

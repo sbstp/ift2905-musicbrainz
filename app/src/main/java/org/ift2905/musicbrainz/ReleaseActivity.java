@@ -50,11 +50,6 @@ public class ReleaseActivity extends AppCompatActivity {
     public class Task extends AsyncTask<Void, Void, List<ListItem>> {
 
         @Override
-        protected void onPostExecute(List<ListItem> items) {
-            listView.setAdapter(new Adapter(items));
-        }
-
-        @Override
         protected List<ListItem> doInBackground(Void... params) {
             List<Release> releases;
 
@@ -66,6 +61,16 @@ public class ReleaseActivity extends AppCompatActivity {
 
             return flattenExtraReleases(diffReleases(releases));
         }
+
+        @Override
+        protected void onPostExecute(List<ListItem> items) {
+            if (items != null) {
+                listView.setAdapter(new Adapter(items));
+            } else {
+                Util.ioErrorDialog(ReleaseActivity.this, true).show();
+            }
+        }
+
     }
 
     // TODO: complexity is like O(n^2)
@@ -152,12 +157,12 @@ public class ReleaseActivity extends AppCompatActivity {
             TextView title = (TextView) v.findViewById(R.id.title);
             TextView duration = (TextView) v.findViewById(R.id.duration);
 
-            Stylist.interweaveListViewBgColor(position, v);
+            Util.interweaveListViewBgColor(position, v);
 
             number.setText(String.format("%02d", position + 1));
             title.setText(recording.name);
             if (recording.length != null && !recording.length.isEmpty()) {
-                duration.setText(Stylist.secondsToText(Integer.parseInt(recording.length)));
+                duration.setText(Util.secondsToText(Integer.parseInt(recording.length)));
             } else {
                 duration.setText("");
             }

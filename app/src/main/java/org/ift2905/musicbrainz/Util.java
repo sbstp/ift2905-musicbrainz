@@ -1,17 +1,36 @@
 package org.ift2905.musicbrainz;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.view.View;
 
-public class Stylist {
+public class Util {
 
     public static ProgressDialog makeProgressDialog(Context ctx) {
         ProgressDialog p = new ProgressDialog(ctx);
+        p.setCancelable(false);
+        p.setCanceledOnTouchOutside(false);
         p.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         p.setIndeterminate(true);
         return p;
+    }
+
+    public static AlertDialog ioErrorDialog(final Activity act, final boolean finishOnOk) {
+        return new AlertDialog.Builder(act)
+                .setCancelable(false)
+                .setMessage(act.getResources().getString(R.string.util_io_error))
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (finishOnOk) {
+                            act.finish();
+                        }
+                    }
+                }).create();
     }
 
     public static void interweaveListViewBgColor(int position, View v) {

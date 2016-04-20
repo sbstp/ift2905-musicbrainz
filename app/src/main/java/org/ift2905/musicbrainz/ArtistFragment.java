@@ -45,7 +45,7 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
         this.list = (ListView) v.findViewById(R.id.list);
         this.list.setOnItemClickListener(this);
         this.list.setEmptyView(v.findViewById(android.R.id.empty));
-        this.progressDialog = Stylist.makeProgressDialog(getContext());
+        this.progressDialog = Util.makeProgressDialog(getContext());
 
         if (search != null) {
             searchBox.setText(search);
@@ -88,9 +88,8 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
 
         @Override
         protected List<Artist> doInBackground(String... params) {
-            MusicBrainzService serv = MusicBrainzService.getInstance();
             try {
-                return serv.searchArtist(params[0]);
+                return MusicBrainzService.getInstance().searchArtist(params[0]);
             } catch (IOException e) {
                 return null;
             }
@@ -98,12 +97,12 @@ public class ArtistFragment extends Fragment implements TextView.OnEditorActionL
 
         @Override
         protected void onPostExecute(List<Artist> artists) {
+            progressDialog.dismiss();
             if (artists != null) {
                 currentArtists = artists;
                 list.setAdapter(new Adapter(artists, inflater));
-                progressDialog.dismiss();
             } else {
-                // TODO show error
+                Util.ioErrorDialog(getActivity(), true).show();
             }
         }
     }

@@ -43,7 +43,7 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
         this.list = (ListView) v.findViewById(R.id.list);
         this.list.setOnItemClickListener(this);
         this.list.setEmptyView(v.findViewById(android.R.id.empty));
-        this.progressDialog = Stylist.makeProgressDialog(getContext());
+        this.progressDialog = Util.makeProgressDialog(getContext());
 
         return v;
     }
@@ -89,9 +89,13 @@ public class AlbumFragment extends Fragment implements TextView.OnEditorActionLi
 
         @Override
         protected void onPostExecute(List<ReleaseGroup> releaseGroups) {
-            currentReleaseGroups = releaseGroups;
-            list.setAdapter(new Adapter(releaseGroups, inflater));
             progressDialog.dismiss();
+            if (releaseGroups != null) {
+                currentReleaseGroups = releaseGroups;
+                list.setAdapter(new Adapter(releaseGroups, inflater));
+            } else {
+                Util.ioErrorDialog(getActivity(), true).show();
+            }
         }
     }
 

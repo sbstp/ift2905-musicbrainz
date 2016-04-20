@@ -31,4 +31,6 @@
     <string name="discography_menu_add_bookmark">Add artist to bookmarks</string>
     <string name="discography_menu_rm_bookmark">Remove artist from bookmarks</string>
     <string name="discography_empty">Nothing matches the filters.</string>
+
+    <string name="util_io_error">Could not contact web service. Please check your Internet connection.</string>
 </resources>

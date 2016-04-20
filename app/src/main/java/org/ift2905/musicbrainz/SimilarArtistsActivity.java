@@ -58,8 +58,12 @@ public class SimilarArtistsActivity extends AppCompatActivity implements Adapter
 
         @Override
         protected void onPostExecute(List<String> similarArtists) {
-            currentSimilarArtists = similarArtists;
-            list.setAdapter(new Adapter(similarArtists));
+            if (similarArtists != null) {
+                currentSimilarArtists = similarArtists;
+                list.setAdapter(new Adapter(similarArtists));
+            } else {
+                Util.ioErrorDialog(SimilarArtistsActivity.this, true).show();
+            }
         }
 
         @Override
@@ -104,7 +108,7 @@ public class SimilarArtistsActivity extends AppCompatActivity implements Adapter
             if (v == null) {
                 v = inflater.inflate(android.R.layout.simple_expandable_list_item_1, parent, false);
             }
-            Stylist.interweaveListViewBgColor(position, v);
+            Util.interweaveListViewBgColor(position, v);
 
             TextView tv = (TextView) v.findViewById(android.R.id.text1);
             tv.setText(similarArtists.get(position));
